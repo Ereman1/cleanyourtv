@@ -15,8 +15,19 @@ this file repeats their rules in the form an agent needs, and links to them for 
 
 [PROMPT.md](PROMPT.md) is the procedure. Its safety rules, in brief:
 
-- **Disable, never uninstall.** `pm disable-user --user 0`, one package per shell call. No
-  `pm uninstall`, no root, nothing flashed. Every step must be undone by `tools/restore.sh`.
+- **Disable, never uninstall (general rule).** `pm disable-user --user 0`, one package per shell call.
+  No general `pm uninstall`, no root, nothing flashed. Disabling must be reversible through
+  `tools/restore.sh`.
+  **Owner-approved exception for this fork and this TV only:** ordinary Android Package Manager uninstall is
+  allowed solely for `top.rootu.lampa`, `com.vgtrk.androidtv`, and `ru.start.androidmobile`,
+  after a fresh per-package check establishes a user-installed package under `/data/app` that
+  is NOT a system/privileged package or an update of a system package. Record package identity,
+  flags and installed path before each uninstall; stop on ambiguity or failed checks.
+  No other package may be uninstalled, hidden or disabled under this exception. In particular,
+  retain `com.internet.tvbrowser` until its replacement is verified, and do not touch HOME,
+  Tailscale, streaming applications or Android system components. Uninstallation removes app
+  data and is not reversible via `tools/restore.sh`; do not claim otherwise.
+
 - **Back up first.** Package list, disabled list, `getprop` and settings into `backup/` before the first
   change. `tools/disable.sh` also writes its own record in `~/.cleanyourtv/`; keep the list you applied.
 - **Leave alone what the TV needs to work:** the TV app and input services behind HDMI and the tuner,
@@ -141,8 +152,10 @@ use it and ends with the check to run.
 Never do these in a PR:
 
 - **No prebuilt APKs or binaries** in the repo, not even as CI artifacts. People build from source.
-- **No uninstalling.** No `pm uninstall` in a list or a script. `pm hide` or `pm block` only with the matching
-  undo written in the list header.
+- **No uninstalling by default.** No `pm uninstall` in a shared list or script. For this fork's
+  owner-approved, single-device exception, see the three explicit user-installed package IDs
+  under "Cleaning a TV: the rules that are not negotiable" above; it does not alter shared
+  debloat lists or scripts. `pm hide` or `pm block` only with the matching undo written in the list header.
 - **No network in the launcher:** no `INTERNET` permission, no network features, no analytics or telemetry, no
   background services or polling, no blur or video. It targets TVs with 1 GB of RAM.
 - **No new launcher dependencies** without discussing them in an issue first.
