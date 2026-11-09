@@ -16,9 +16,16 @@ first" is a common reply.
 
 ## Never, anywhere
 
-- **No uninstalling, root or bypasses.** Everything here disables with `pm disable-user`, so `tools/restore.sh`
-  undoes it. No `pm uninstall`, no `pm hide` without its undo, no root, and no way around a maker's install
-  block ([#706](https://github.com/Gathin23/cleanyourtv/pull/706), [#472](https://github.com/Gathin23/cleanyourtv/pull/472),
+- **No uninstalling, root or bypasses by default.** Everything in shared debloat workflows disables
+  with `pm disable-user`, so `tools/restore.sh` undoes it. For this fork and this TV only, the owner
+  authorizes ordinary Package Manager uninstall exclusively for `top.rootu.lampa`,
+  `com.vgtrk.androidtv`, and `ru.start.androidmobile`, after a fresh check of each package's
+  `/data/app` install path and flags confirms it is user-installed, not system/privileged and
+  not an update to a system package. Record identity, flags and path; stop if uncertain.
+  Do not uninstall or disable system apps, touch any other package (including TV Browser),
+  or bypass app-store protections. Uninstallation can delete app data and cannot be undone by
+  `tools/restore.sh`. Otherwise no `pm uninstall`, no `pm hide` without its undo, no root,
+  and no way around a maker's install block ([#706](https://github.com/Gathin23/cleanyourtv/pull/706), [#472](https://github.com/Gathin23/cleanyourtv/pull/472),
   [#678](https://github.com/Gathin23/cleanyourtv/pull/678), [#830](https://github.com/Gathin23/cleanyourtv/pull/830),
   [#347](https://github.com/Gathin23/cleanyourtv/pull/347)).
 - **No prebuilt binaries.** No APKs (not even as workflow artifacts), `.so` files or zip uploads: everyone builds
